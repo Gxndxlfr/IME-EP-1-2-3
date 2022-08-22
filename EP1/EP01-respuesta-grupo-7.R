@@ -39,5 +39,15 @@ datos <- read.csv(file = "C:/Users/israe/OneDrive/Escritorio/universidad/8vo sem
 #permite transformar una medida en una escala a su equivalente en otra escala
 
 
+#arreglo con días por mes
+cantDias <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 #Modificar datos
+datos$Region <- factor(datos$Region)
 
+
+
+
+#1. ¿Qué día se produjo el mayor número de casos con síntomas en la región de Los Ríos entre el 01-jun-2020 y 
+# el 31-dic-2020?
+# 2. ¿Cuál fue el total de casos con síntomas para cada mes de este periodo?
+  
