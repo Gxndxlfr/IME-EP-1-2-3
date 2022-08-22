@@ -6,10 +6,7 @@
 #            - NICOLAS MARCELO VALDES HERRERA 
 
 
-library(readr)
-texto <- "C:/Users/israe/OneDrive/Escritorio/universidad/8vo semestre/IME/EP/IME-EP-1-2-3/EP1/EP01 Datos Covid.csv"
-
-
+library(dplyr)
 
 #Cargar Datos brutos
 datos <- read.csv2(file = "C:/Users/israe/OneDrive/Escritorio/universidad/8vo semestre/IME/EP/IME-EP-1-2-3/EP1/EP01 Datos Covid.csv",
@@ -24,6 +21,17 @@ datos$Region <- factor(datos$Region)
 #obtener región objetivo "Los ríos"
 regionObjetivo <- datos %>% filter(Region == "Los Ríos")
 
+max <- 0
+regionObjetivo <- t(regionObjetivo)
+for (j in 92:305) {
+  print(regionObjetivo[j])
+  num <- as.numeric(regionObjetivo[j]) 
+  if(num >= max) {
+    max <- num
+    print(j)
+  }
+  
+}
 # • ¿Qué variables se han cargado?
     #R: Se cargan un total de 734 variables.
         # La primera variable que se identifica es región, por otro lado se carga
