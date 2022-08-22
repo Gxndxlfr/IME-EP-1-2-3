@@ -6,13 +6,23 @@
 #            - NICOLAS MARCELO VALDES HERRERA 
 
 
+library(readr)
+texto <- "C:/Users/israe/OneDrive/Escritorio/universidad/8vo semestre/IME/EP/IME-EP-1-2-3/EP1/EP01 Datos Covid.csv"
+
 
 
 #Cargar Datos brutos
-datos <- read.csv(file = "C:/Users/israe/OneDrive/Escritorio/universidad/8vo semestre/IME/EP/IME-EP-1-2-3/EP1/EP01 Datos Covid.csv",
-                    
-                    encoding = "UTF-8",
+datos <- read.csv2(file = "C:/Users/israe/OneDrive/Escritorio/universidad/8vo semestre/IME/EP/IME-EP-1-2-3/EP1/EP01 Datos Covid.csv",
+                    encoding = "latin1",
                     sep = ";")
+
+#arreglo con días por mes
+cantDias <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+#Modificar datos
+datos$Region <- factor(datos$Region)
+
+#obtener región objetivo "Los ríos"
+regionObjetivo <- datos %>% filter(Region == "Los Ríos")
 
 # • ¿Qué variables se han cargado?
     #R: Se cargan un total de 734 variables.
@@ -26,6 +36,7 @@ datos <- read.csv(file = "C:/Users/israe/OneDrive/Escritorio/universidad/8vo sem
 # • ¿Qué escala parecen tener estas variables?
     #R: La variable Región cuenta con una escala nominal y las 773 variables fecha
         #cuentan con una escala de razón
+
 # escala nominal: sirve solo para separar un conjunto de elementos en subclases excluyentes entre sí.
 # Los valores no son más que nombres o estados, por lo que no podemos hacer operaciones aritméticas
 # ni podemos establecer relaciones de orden.
@@ -38,11 +49,6 @@ datos <- read.csv(file = "C:/Users/israe/OneDrive/Escritorio/universidad/8vo sem
 # escalas Celsius y Fahrenheit). +  no existe una transformación lineal que nos
 #permite transformar una medida en una escala a su equivalente en otra escala
 
-
-#arreglo con días por mes
-cantDias <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-#Modificar datos
-datos$Region <- factor(datos$Region)
 
 
 
