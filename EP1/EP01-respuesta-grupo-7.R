@@ -18,20 +18,67 @@ cantDias <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 #Modificar datos
 datos$Region <- factor(datos$Region)
 
+#1. ¿Qué día se produjo el mayor número de casos con síntomas en la región de Los Ríos entre el 01-jun-2020 y 
+# el 31-dic-2020?
+
 #obtener región objetivo "Los ríos"
 regionObjetivo <- datos %>% filter(Region == "Los Ríos")
 
-max <- 0
-regionObjetivo <- t(regionObjetivo)
+max <- 0 #variable que aloja el maximo de casos encontrado
+suma<- 0 #acumulador casos totales
+regionObjetivo <- t(regionObjetivo) 
+#columna 01/06/2020 = 92
+#columna 31/12/2020 = 305
 for (j in 92:305) {
   print(regionObjetivo[j])
   num <- as.numeric(regionObjetivo[j]) 
-  if(num >= max) {
+  if(num >= max) { #comparar maximo
     max <- num
-    print(j)
+    cat("Id columna día con máximos casos\n")
+    print(j) 
+  }
+  suma <- suma + num 
+  
+}
+# 2. ¿Cuál fue el total de casos con síntomas para cada mes de este periodo?
+
+#arreglo con días por mes y nombres de cada mes
+cantDias <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+nombresMes <- c("enero", "febrero", "marzo", "abril", 
+                "mayo", "junio", "julio", "agosto",
+                "septiembre", "octubre", "noviembre",
+                "diciembre")
+#contador de dias
+contador <- 0
+
+#identificador de mes
+idMes <- 6
+
+#lista para total de contagiados por mes
+lista_vacia <- list()
+
+#identificador de nuevo elemento lista_vacia
+idLista <- 1
+
+#acumulador para contagiados por mes
+sumaMes <- 0
+for (j in 92:305) {
+  
+  if(contador <= cantDias[idMes]){ #verificar que ya termino el mes
+    contador = contador + 1 
+    sumaMes = sumaMes + as.numeric(regionObjetivo[j])
+    if(contador == cantDias[idMes]){ #ultimo día del mes resetear variables
+      lista_vacia[idLista] <- sumaMes
+      idLista <- idLista + 1
+      sumaMes <- 0
+      contador <- 0
+      idMes <- idMes + 1
+    }
   }
   
 }
+
+
 # • ¿Qué variables se han cargado?
     #R: Se cargan un total de 734 variables.
         # La primera variable que se identifica es región, por otro lado se carga
@@ -61,7 +108,5 @@ for (j in 92:305) {
 
 
 
-#1. ¿Qué día se produjo el mayor número de casos con síntomas en la región de Los Ríos entre el 01-jun-2020 y 
-# el 31-dic-2020?
-# 2. ¿Cuál fue el total de casos con síntomas para cada mes de este periodo?
-  
+
+
