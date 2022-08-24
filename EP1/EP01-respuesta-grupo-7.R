@@ -6,103 +6,53 @@
 #            - NICOLAS MARCELO VALDES HERRERA 
 
 
+# • ¿Qué variables se han cargado?
+#R: Se cargan un total de 734 variables.
+# La primera variable que se identifica es región, por otro lado se carga
+# un intervalo de fechas 03/03/2020 - 06/03/2022 (773 días)
+
+# • ¿Qué tipo tiene cada una de estas variables?
+#R: La variable región es una variable de tipo categórica nominal, en cambio
+#las 773 variables fecha son del tipo numerica discreta
+
+# • ¿Qué escala parecen tener estas variables?
+#R: La variable Región cuenta con una escala nominal y las 773 variables fecha
+#cuentan con una escala de razón
+
 library(dplyr)
 
+
+
+#1. ¿Qué día se produjo el mayor número de casos con síntomas en la región de Los Ríos entre el 01-jun-2020 y 
+# el 31-dic-2020? 
+
 #Cargar Datos brutos
-datos <- read.csv2(file = "C:/Users/israe/OneDrive/Escritorio/universidad/8vo semestre/IME/EP/IME-EP-1-2-3/EP1/EP01 Datos Covid.csv",
+datos <- read.csv2(file = "C:/Users/usuario/Desktop/IME/IME-EP-1-2-3/EP1/EP01 Datos Covid.csv",
                     encoding = "latin1",
                     sep = ";")
 
-#arreglo con días por mes
-cantDias <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-#Modificar datos
-datos$Region <- factor(datos$Region)
+rios<-datos[datos$Region=="Los Ríos",92:305]
+rios$X29.06.2020 <- as.numeric(rios$X29.06.2020)
+rios$X30.06.2020 <- as.numeric(rios$X30.06.2020)
+maximo<-max(rios)
+rios<-rios%>%pivot_longer(colnames(rios),names_to="Fecha",values_to="Contagios")
+fecha_maximo<-rios%>%filter(Contagios==maximo)
 
-#1. ¿Qué día se produjo el mayor número de casos con síntomas en la región de Los Ríos entre el 01-jun-2020 y 
-# el 31-dic-2020?
+#Variable fecha_maxima contiene la respuesta de la pregunta 1
 
-#obtener región objetivo "Los ríos"
-regionObjetivo <- datos %>% filter(Region == "Los Ríos")
-
-max <- 0 #variable que aloja el maximo de casos encontrado
-suma<- 0 #acumulador casos totales
-regionObjetivo <- t(regionObjetivo) 
-#columna 01/06/2020 = 92
-#columna 31/12/2020 = 305
-for (j in 92:305) {
-  print(regionObjetivo[j])
-  num <- as.numeric(regionObjetivo[j]) 
-  if(num >= max) { #comparar maximo
-    max <- num
-    cat("Id columna día con máximos casos\n")
-    print(j) 
-  }
-  suma <- suma + num 
-  
-}
 # 2. ¿Cuál fue el total de casos con síntomas para cada mes de este periodo?
 
-#arreglo con días por mes y nombres de cada mes
-cantDias <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-nombresMes <- c("enero", "febrero", "marzo", "abril", 
-                "mayo", "junio", "julio", "agosto",
-                "septiembre", "octubre", "noviembre",
-                "diciembre")
-#contador de dias
-contador <- 0
+total<-datos[datos$Region=="Total",92:305]
 
-#identificador de mes
-idMes <- 6
-
-#lista para total de contagiados por mes
-lista_vacia <- list()
-
-#identificador de nuevo elemento lista_vacia
-idLista <- 1
-
-#acumulador para contagiados por mes
-sumaMes <- 0
-for (j in 92:305) {
-  
-  if(contador <= cantDias[idMes]){ #verificar que ya termino el mes
-    contador = contador + 1 
-    sumaMes = sumaMes + as.numeric(regionObjetivo[j])
-    if(contador == cantDias[idMes]){ #ultimo día del mes resetear variables
-      lista_vacia[idLista] <- sumaMes
-      idLista <- idLista + 1
-      sumaMes <- 0
-      contador <- 0
-      idMes <- idMes + 1
-    }
-  }
-  
+for (j in 2:length(total)) {
+  total[j] <- as.numeric(total[j])
 }
 
+colnames(total)<-format(as.Date(colnames(total),format="X%d.%m.%Y"),"%m")
+total<-total%>%pivot_longer(colnames(total),names_to="Periodo",values_to="Contagios")
+total_por_mes<-total%>%group_by(Periodo)%>%summarise(total=sum(Contagios))
 
-# • ¿Qué variables se han cargado?
-    #R: Se cargan un total de 734 variables.
-        # La primera variable que se identifica es región, por otro lado se carga
-        # un intervalo de fechas 03/03/2020 - 06/03/2022 (773 días)
-
-# • ¿Qué tipo tiene cada una de estas variables?
-    #R: La variable región es una variable de tipo categórica nominal, en cambio
-        #las 773 variables fecha son del tipo numerica discreta
-
-# • ¿Qué escala parecen tener estas variables?
-    #R: La variable Región cuenta con una escala nominal y las 773 variables fecha
-        #cuentan con una escala de razón
-
-# escala nominal: sirve solo para separar un conjunto de elementos en subclases excluyentes entre sí.
-# Los valores no son más que nombres o estados, por lo que no podemos hacer operaciones aritméticas
-# ni podemos establecer relaciones de orden.
-# 
-# Escala de razón: cumple con todos los atributos de la escala de intervalos, pero además tiene su origen
-# en un cero verdadero. Ejemplos de tales escalas son, por ejemplo, las que permiten medir la masa o
-# la distancia. En una escala de razón, la diferencia entre dos puntos es independiente de la unidad de
-# medida. Por ejemplo, si medimos la masa de dos objetos, la razón es constante independientemente de
-# si empleamos kilogramos, libras u onzas (a diferencia de lo que ocurre con la temperatura usando las
-# escalas Celsius y Fahrenheit). +  no existe una transformación lineal que nos
-#permite transformar una medida en una escala a su equivalente en otra escala
+#variable total_por_mes contiene la respuesta de la pregunta 2
 
 
 
@@ -110,3 +60,5 @@ for (j in 92:305) {
 
 
 
+
+  
