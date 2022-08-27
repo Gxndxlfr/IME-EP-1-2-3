@@ -24,8 +24,8 @@ resumen_ingresos_mujeres <- group_by(ingresos_mujeres, comuna)%>%summarise( coun
                                                            sd( ytot ) , sd(ytot)/median(ytot), mean(ing.comuna))
 resumen_ingresos_hombres <- group_by(ingresos_hombres, comuna)%>%summarise( count = n() , mean(ytot) , median ( ytot ) ,
                                                                             sd( ytot ) , sd(ytot)/median(ytot), mean(ing.comuna))
-names(resumen_ingresos_mujeres)[3] <- "Moda"
-names(resumen_ingresos_mujeres)[4] <- "Media"
+names(resumen_ingresos_mujeres)[3] <- "Media"
+names(resumen_ingresos_mujeres)[4] <- "Mediana"
 names(resumen_ingresos_mujeres)[5] <- "Desvest"
 names(resumen_ingresos_mujeres)[6] <- "Coef Var"
 names(resumen_ingresos_mujeres)[7] <- "ing.comuna"
