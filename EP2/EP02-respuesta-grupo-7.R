@@ -21,24 +21,27 @@ ingresos_hombres <- ingresos%>%filter(sexo=="Hombre")
 ingresos_mujeres <- ingresos%>%filter(sexo=="Mujer")
 
 resumen_ingresos_mujeres <- group_by(ingresos_mujeres, comuna)%>%summarise( count = n() , mean(ytot) , median ( ytot ) ,
-                                                           sd( ytot ) , sd(ytot)/median(ytot), mean(ing.comuna))
+                                                           sd( ytot ) , sd(ytot)/median(ytot), mean(ing.comuna), sum(ytot))
 resumen_ingresos_hombres <- group_by(ingresos_hombres, comuna)%>%summarise( count = n() , mean(ytot) , median ( ytot ) ,
-                                                                            sd( ytot ) , sd(ytot)/median(ytot), mean(ing.comuna))
+                                                                            sd( ytot ) , sd(ytot)/median(ytot), mean(ing.comuna), sum(ytot))
 names(resumen_ingresos_mujeres)[3] <- "Media"
 names(resumen_ingresos_mujeres)[4] <- "Mediana"
 names(resumen_ingresos_mujeres)[5] <- "Desvest"
 names(resumen_ingresos_mujeres)[6] <- "Coef Var"
 names(resumen_ingresos_mujeres)[7] <- "ing.comuna"
+names(resumen_ingresos_mujeres)[8] <- "Suma"
 
-media_ingresos_hombres <- mean(ingresos_hombres$ytot)
-media_ingresos_mujeres <-mean(ingresos_mujeres$ytot)
+names(resumen_ingresos_hombres)[3] <- "Media"
+names(resumen_ingresos_hombres)[4] <- "Mediana"
+names(resumen_ingresos_hombres)[5] <- "Desvest"
+names(resumen_ingresos_hombres)[6] <- "Coef Var"
+names(resumen_ingresos_hombres)[7] <- "ing.comuna"
+names(resumen_ingresos_hombres)[8] <- "Suma"
 
-mediana_hombres <- median(ingresos_hombres$ytot)
-mediana_mujeres <- median(ingresos_mujeres$ytot)
 
-desviacion_hombres <- sd(ingresos_hombres$ytot)
-desviaion_mujeres <- sd(ingresos_mujeres$ytot)
+g <- ggplot (resumen_ingresos_mujeres, aes ( fill = resumen_ingresos_mujeres$`comuna`, x =  resumen_ingresos_mujeres$`ing.comuna`, y =  resumen_ingresos_mujeres$`Media`) )
+g <- g + geom_bar(position = "dodge", stat = "identity")
+g <- g + labs(y = "Media") + labs(x = "Ranking") + labs(fill = "Comunas")
+g <- g + theme_pubr()
 
-coef_var_hombres <- desviacion_hombres/media_ingresos_hombres
-coef_var_mujeres <- desviaion_mujeres/media_ingresos_mujeres
-
+print(g)
