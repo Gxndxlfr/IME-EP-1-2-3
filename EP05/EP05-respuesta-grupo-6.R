@@ -102,10 +102,57 @@ cat("La probabilidad de cometer un error de tipo 2 es de un ",p*100,"%")
 #   3. Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las
 # condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,3 a 10 litros.
 
+# Se utiliza 10 - 9.3 = 0.7
 
-# 4. Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder
+# Puntos para poder graficar el efecto
+efecto1 <- seq(0,0.7,0.001)
+
+# Se calcula el poder como prueba unilateral
+poder1 <- power.t.test(n = n,
+                                  delta=efecto1,
+                                  sd=1,
+                                  power=NULL,
+                                  sig.level = alfa,
+                                  type="one.sample",
+                                  alternative="one.sided")$power
+
+# Gráfico
+g1 <- ggplot(data.frame(efecto1, poder1),
+             aes(efecto1, poder1,
+                 colour="red"))
+g1 <- g1 + geom_line()
+g1 <- g1 + labs(colour="")
+g1 <- g1 + ylab("Poder estadistico")
+g1 <- g1 + xlab("Tamaño del efecto")
+g1 <- g1 + theme_pubr()
+g1 <- g1 + ggtitle("Curva de poder estadistico para volumen que varia entre 9.3 y 10")
+print(g1)
+
+
+#   4. Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder
 # estadístico de 0,8 y un nivel de significación de 0,05?
 
+# Se busca el tamaño de la muestra.
+
+n1 <- power.t.test(n=NULL,
+                   delta=0.2,
+                   sig.level = 0.05,
+                   power=0.8,
+                   sd=1,
+                   type = "one.sample",
+                   alternative="one.sided")$n
+
+cat("La cantidad de bidones para conseguir un poder estadistico de 0.8 con un nivel de significancia de 0.05 deberían ser", ceiling(n1))
 
 #   5. ¿Y si el ingeniero fuese muy exigente y quisiera reducir la probabilidad de cometer un error de tipo I a un 1%
 # solamente?
+
+n2 <- power.t.test(n=NULL,
+                   delta=0.2,
+                   sig.level = 0.01,
+                   power=0.8,
+                   sd=1,
+                   type = "one.sample",
+                   alternative="one.sided")$n
+
+cat("La cantidad de bidones para conseguir un poder estadistico de 0.8 con un nivel de significancia de 0.01 deberían ser", ceiling(n2))
