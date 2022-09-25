@@ -50,6 +50,22 @@ print(prueba1)
 # ▪ En los casos restantes, ambos gemelos están libres de problemas psicológicos.
 # ¿Influye el entorno en que un niño crece en la aparición de trastornos psicológicos en la edad adulta?
 
+# Hipotesis:
+# H0: No influye el entorno en que un niño crece en la aparición de trastornos psicológicos en la edad adulta
+# H1: Influye el entorno en que un niño crece en la aparición de trastornos psicológicos en la edad adulta
+
+adoptado <- c(rep("Con Trastorno", 1), rep("Con Trastorno", 2), rep("Sin Trastorno", 5), rep("Sin Trastorno", 4))
+centro <- c(rep("Con Trastorno", 1), rep("Sin Trastorno", 2), rep("Con Trastorno", 5), rep("Sin Trastorno", 4))
+tabla2 <- table(adoptado, centro)
+prueba2 <- mcnemar.test(tabla2)
+print(tabla2)
+print(prueba2)
+
+# Se puede concluir que se falla al rechazar la hipotesis nula porque el p-value = 0.4497 es mucho mayor al nivel de significancia 0.05, 
+# por ende, se podría decir que con un 95% de confianza que no influye el entorno en que un niño crece con la aparición de trastornos 
+# psicológicos en la edad adulta.
+
+
 #   3. El 21 de marzo de 2022 se realizó un estudio acerca de la aprobación al presidente Gabriel Boric entre los
 # estudiantes de una prestigiosa universidad a fin de comparar los resultados con los obtenidos en la misma
 # encuesta a nivel nacional, obteniéndose los resultados que se muestran en la tabla. ¿Refleja la opinión
