@@ -105,5 +105,27 @@ print(prueba)
 #   4. La Facultad de Ingeniería desea saber si existe diferencia significativa en el desempeño de los estudiantes en
 # asignaturas críticas de primer semestre. Para ello, le ha entregado un archivo de datos que, para 3
 # asignaturas, indica si una muestra de 50 estudiantes aprobó o reprobó. ¿Qué puede concluir la Facultad?
-#   Indicación: obtenga la muestra a partir del archivo EP07 Datos.csv, usando la semilla 453. Considere un nivel
+# Indicación: obtenga la muestra a partir del archivo EP07 Datos.csv, usando la semilla 453. Considere un nivel
 # de significación α=0,05.  
+
+#Hipotesis establecidas
+#H0: La proporciOn de estudiantes aprobados es igual en todos los ramos
+#H1: La proporcion de estudiantes aprobados es distinta en al menos un ramo
+
+archivo4 <- read.csv2(file = 'C:/Users/Ekayn/Desktop/codigos/IME-EP-1-2-3/EP07/EP07 Datos.csv',
+                      encoding = "UTF-8",
+                      sep = ";")
+set.seed(453)
+datos4<-sample_n(archivo4,50)
+datos4<-datos4%>%pivot_longer(c("Calculo","Algebra","Fisica"),
+                              names_to="Asignatura",
+                              values_to="Estado"
+)
+datos4[["Asignatura"]]<-factor(datos4[["Asignatura"]])
+datos4[["Estado"]]<-factor(datos4[["Estado"]])
+
+prueba4<-cochran.qtest(Estado~Asignatura|Id,data=datos4,alpha=0.05)
+print(prueba4)
+
+#Con un nivel de significancia de alfa=0.05 existe suficiente evidencia para rechazar la hipotesis alternativa.
+#Por lo tanto se concluye que la proporción de aprobación de los 3 ramos es similar.

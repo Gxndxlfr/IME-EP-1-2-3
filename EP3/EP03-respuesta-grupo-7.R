@@ -11,7 +11,11 @@ library(ggpubr)
 library(tidyr)
 
 #Se cargan los datos desde el csv; Datos casen 2017
+<<<<<<< Updated upstream
 poblacion <- read.csv2(file = "C:/Users/Nico/Desktop/Universidad/IME/IME-EP-1-2-3/EP3/EP03 Datos Casen 2017.csv",
+=======
+poblacion <- read.csv2(file = "C:/Users/Ekayn/Desktop/codigos/IME-EP-1-2-3/EP3/EP03 Datos Casen 2017.csv",
+>>>>>>> Stashed changes
                    encoding = "UTF-8",
                    sep = ";")
 
@@ -141,7 +145,11 @@ print(g4)
 #.7 ---------Definir semilla y número de repeticiones ----------
 #.----------------------------------------------------------------
 
+<<<<<<< Updated upstream
 set.seed(12345)
+=======
+set.seed(21232)
+>>>>>>> Stashed changes
 n.repeticiones <- 20
 
 ensayo <- function(x)
