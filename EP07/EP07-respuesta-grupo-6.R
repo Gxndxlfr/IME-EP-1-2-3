@@ -55,6 +55,37 @@ print(prueba1)
 # encuesta a nivel nacional, obteniéndose los resultados que se muestran en la tabla. ¿Refleja la opinión
 # estudiantil la percepción del país?
 
+estudiantes <- c(125, 77, 21)
+nacional <- c(5046, 3421, 706)
+
+#R: Dado que se quiere conocer si la opinion de los estudiantes es representativa de la opinion nacional
+#   Se utiliza la prueba chi-cuadrado de Pearson
+#   Verificando las condiciones para esta prueba
+
+#1. Las observaciones deben ser independientes entre sí.
+#2. Debe haber a lo menos 5 observaciones esperadas en cada grupo.
+
+#Se puede asumar que los resultados de la encuesta son independientes entre si.
+#Se poseen mas de 5 observaciones esperadas en cada grupo
+
+#Se definen las hipotesis a contrastar:
+#H0: Los estudiantes y la nacion tienen la misma opinion respecto al presidente Gabriel Boric
+#Ha: Los estudiantes y la nacion tienen diferentes opiniones respecto al presidente Gabriel Boric
+
+tabla <- as.table(rbind(estudiantes, nacional))
+
+dimnames(tabla) <- list( c("Estudiantes", "Nacional"),
+                         c("Aprueba", "Rechaza", "Nulo"))
+
+print(tabla)
+
+prueba <- chisq.test(tabla)
+print(prueba)
+
+# Con un nivel de significancia a=0,05 existe suficiente evidencia para aprobar la hipotesis nula.
+# Por lo tanto se concluye que la encuesta a nivel estudiantil y nacional presentan las mismas preferencias.
+
+
 #   4. La Facultad de Ingeniería desea saber si existe diferencia significativa en el desempeño de los estudiantes en
 # asignaturas críticas de primer semestre. Para ello, le ha entregado un archivo de datos que, para 3
 # asignaturas, indica si una muestra de 50 estudiantes aprobó o reprobó. ¿Qué puede concluir la Facultad?
